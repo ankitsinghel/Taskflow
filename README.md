@@ -1,36 +1,177 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
-## Getting Started
+# TaskFlow — Minimal Task Manager Built with Next.js + Redux
 
-First, run the development server:
+TaskFlow is a modern, minimal, full-stack task & project management app built to learn and demonstrate real-world patterns using **Next.js, Redux Toolkit, Prisma, NextAuth, PostgreSQL, shadcn/ui**, and **Drag & Drop**.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+---
+
+## 🚀 Features
+
+### Core
+- Create, edit, delete tasks
+- Categories / tags
+- Project-based organization (Projects → Tasks)
+- Search + filters
+- Offline support using **Redux Persist**
+
+### Advanced Features
+- Drag & drop using **@hello-pangea/dnd**
+- Global state using **Redux Toolkit**
+- Authentication using **NextAuth | Oauth**
+- Database using **PostgreSQL + Prisma**
+- Analytics dashboard (task stats, completion %, graphs)
+- Fully responsive UI using **shadcn/ui**
+- Auto-sync tasks to DB after login
+
+---
+
+## 🏗️ Tech Stack
+
+### Frontend
+- Next.js 16 (App Router)
+- Redux Toolkit
+- shadcn/ui
+- TailwindCSS
+- @hello-pangea/dnd
+
+### Backend
+- Next.js API Routes
+- NextAuth
+- Prisma ORM
+- PostgreSQL (Neon / PlanetScale)
+
+### Dev Experience
+- TypeScript
+- ESLint + Prettier
+
+---
+# 📂 Project Folder Structure
+
+```text
+.
+├── app/
+│   ├── (auth)/
+│   │   ├── login/
+│   │   └── register/
+│   ├── (dashboard)/
+│   │   ├── analytics/
+│   │   └── projects/
+│   │       ├── [id]/
+│   │       └── new/
+│   ├── layout.tsx
+│   └── page.tsx
+│
+├── components/
+│   ├── TaskInput/
+│   │   └── index.tsx
+│   ├── TaskList/
+│   │   ├── index.tsx
+│   │   └── TaskItem.tsx
+│   ├── ProjectSidebar/
+│   │   └── index.tsx
+│   └── Layout/
+│       ├── Header.tsx
+│       └── Sidebar.tsx
+│
+├── store/
+│   ├── slices/
+│   │   ├── tasksSlice.ts
+│   │   ├── projectsSlice.ts
+│   │   └── authSlice.ts
+│   ├── store.ts
+│   └── persistConfig.ts
+│
+├── lib/
+│   ├── prisma.ts
+│   ├── auth.ts
+│   ├── analytics.ts
+│   └── helpers.ts
+│
+├── prisma/
+│   ├── schema.prisma
+│   └── migrations/
+│
+├── public/
+│   ├── favicon.ico
+│   ├── logo.svg
+│   └── cover.png
+│
+├── .env
+├── next.config.js
+├── package.json
+└── README.md
+
+---
+
+## 🔧 Environment Variables
+
+Create a `.env` file:
+
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+DATABASE_URL=""
+NEXTAUTH_SECRET=""
+GOOGLE_CLIENT_ID=""
+GOOGLE_CLIENT_SECRET=""
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 🗄️ Database Schema (Prisma)
 
-## Learn More
+```prisma
+model User {
+  id       String   @id @default(cuid())
+  email    String   @unique
+  projects Project[]
+}
 
-To learn more about Next.js, take a look at the following resources:
+model Project {
+  id       String  @id @default(cuid())
+  name     String
+  userId   String
+  tasks    Task[]
+}
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+model Task {
+  id        String  @id @default(cuid())
+  title     String
+  category  String
+  completed Boolean @default(false)
+  projectId String
+}
+````
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+---
 
-## Deploy on Vercel
+## 📊 Analytics Dashboard Includes
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+* Total tasks
+* Completed tasks
+* Completion percentage
+* Tasks per category
+* Tasks per project
+* Graphs using Recharts
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+---
+
+## 🛠️ Running Locally
+
+Install dependencies:
+
+```
+npm install
+```
+
+Run Prisma setup:
+
+```
+npx prisma migrate dev
+```
+
+Run development server:
+
+```
+npm run dev
+```
+
+---
+```
