@@ -7,6 +7,7 @@ export default async function ProjectsPage() {
   const {
     data: { user },
   } = await supabase.auth.getUser();
+  console.log("Authenticated user:", user);
 
   if (!user) {
     redirect("/login");
